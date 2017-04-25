@@ -1,20 +1,7 @@
-/*
-Copyright IBM Corp 2016 All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-		 http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 package main
+
+//import nesessage packages here
 
 import (
 	"errors"
@@ -24,12 +11,14 @@ import (
 )
 
 // SimpleChaincode example simple Chaincode implementation
+//the struct SimpleChaincode is used for pointer receivers
 type SimpleChaincode struct {
 }
 
 // ============================================================================================================================
-// Main
+// Main Method for the go file
 // ============================================================================================================================
+
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
@@ -37,8 +26,13 @@ func main() {
 	}
 }
 
+
+// ============================================================================================================================
 // Init resets all the things
+// ============================================================================================================================
+
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	fmt.Println("Inside Init")
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
@@ -51,8 +45,15 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	return nil, nil
 }
 
+
+// ============================================================================================================================
 // Invoke is our entry point to invoke a chaincode function
+// ============================================================================================================================
+
+
+
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	fmt.Println("Inside Invoke")
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
@@ -66,8 +67,13 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
+
+// ============================================================================================================================
 // Query is our entry point for queries
+// ============================================================================================================================
+
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	fmt.Println("Inside Query")
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
@@ -79,7 +85,13 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
     	return nil, errors.New("Received unknown function query: " + function)
 }
+
+// ============================================================================================================================
+// write method changes the ledger state as it writes into the chain
+// ============================================================================================================================
+
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	fmt.Println("Inside Custom method Write")
 	var key, value string
 	var err error
 	fmt.Println("running write()")
@@ -96,7 +108,13 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	}
 	return nil, nil
 }
+
+// ============================================================================================================================
+// read method does not changes the ledger state as it just reads from the chain
+// ============================================================================================================================
+
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	fmt.Println("Inside Custom method Read")
 	var key, jsonResp string
 	var err error
 
